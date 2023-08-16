@@ -10,16 +10,9 @@ export class App extends Component {
     filter: '',
   };
 
-  // handleAddContact = newContact => {
-  //   this.setState(prevState => ({
-  //     contacts: [...prevState.contacts, newContact],
-  //   }));
-  // };
-
   handleAddContact = values => {
     const { name, number } = values;
 
-    // Перевірка, чи ім'я контакту вже існує
     if (this.state.contacts.some(contact => contact.name === name)) {
       alert(`Contact with name "${name}" already exists!`);
       return;
