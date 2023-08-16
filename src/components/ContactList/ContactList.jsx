@@ -1,14 +1,18 @@
 import React from 'react';
 
+import { ListWrapper, ItemStyle, DeleteBtn } from './ContactList.styled';
+
 export function ContactList({ contacts, onDeleteContact }) {
   return (
-    <ul>
+    <ListWrapper>
       {contacts.map(contact => (
-        <li key={contact.id}>
+        <ItemStyle key={contact.id}>
           {contact.name}: {contact.number}
-          <button onClick={() => onDeleteContact(contact.id)}>Delete</button>
-        </li>
+          <DeleteBtn onClick={() => onDeleteContact(contact.id)}>
+            Delete
+          </DeleteBtn>
+        </ItemStyle>
       ))}
-    </ul>
+    </ListWrapper>
   );
 }

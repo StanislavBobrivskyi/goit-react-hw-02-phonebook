@@ -1,10 +1,10 @@
 import React from 'react';
-
+import { InputStyled, Wrapper } from './ContactFilter.stelyd';
 export function ContactFilter({ filter, onChangeFilter }) {
   return (
-    <div>
+    <Wrapper>
       <p>Find contacts by name</p>
-      <input type="text" value={filter} onChange={onChangeFilter} />
-    </div>
+      <InputStyled type="text" value={filter} onChange={onChangeFilter} />
+    </Wrapper>
   );
 }

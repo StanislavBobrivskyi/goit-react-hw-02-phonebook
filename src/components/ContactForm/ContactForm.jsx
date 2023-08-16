@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import { nanoid } from 'nanoid';
 import * as Yup from 'yup';
+import {
+  StyledForm,
+  StyledField,
+  SubmitBtn,
+  StyledError,
+} from './ContactForm.styled';
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().min(2, 'Too Short!').required('Required'),
@@ -29,29 +35,29 @@ export class ContactForm extends Component {
           resetForm();
         }}
       >
-        <Form>
+        <StyledForm>
           <div>
             <p>Name</p>
-            <Field
+            <StyledField
               type="text"
               name="name"
               title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
               required
             />
-            <ErrorMessage name="name" component="div" />
+            <StyledError name="name" component="div" />
           </div>
           <div>
             <p>Phone number</p>
-            <Field
+            <StyledField
               type="tel"
               name="number"
               title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
               required
             />
-            <ErrorMessage name="number" component="div" />
+            <StyledError name="number" component="div" />
           </div>
-          <button type="submit">Add contact</button>
-        </Form>
+          <SubmitBtn type="submit">Add contact</SubmitBtn>
+        </StyledForm>
       </Formik>
     );
   }
