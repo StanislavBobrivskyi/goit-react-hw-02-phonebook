@@ -38,6 +38,7 @@ export const SubmitBtn = styled.button`
 `;
 
 export const StyledError = styled(ErrorMessage)`
+  width: 200px;
   margin-top: 10px;
   color: red;
   font-size: 10px;
