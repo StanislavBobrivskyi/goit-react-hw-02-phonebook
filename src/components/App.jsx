@@ -1,24 +1,33 @@
 import React, { Component } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { nanoid } from 'nanoid';
-import * as Yup from 'yup';
+import { ContactForm } from './ContactForm/ContactForm';
+import { ContactList } from './ContactList/ContactList';
+import { ContactFilter } from './ContactFiltr/ContactFilter';
 
 export class App extends Component {
   state = {
     contacts: [],
-    name: '',
-    number: '',
+    filter: '',
   };
 
-  // const schema = Yup.objekt().shape({
-  //   name: Yup.string().required('* Name is required'),
-  //   number: Yup.string().min(6).max(10).required(''),
-  // });
+  // handleAddContact = newContact => {
+  //   this.setState(prevState => ({
+  //     contacts: [...prevState.contacts, newContact],
+  //   }));
+  // };
 
   handleAddContact = values => {
     const { name, number } = values;
+
+    // Перевірка, чи ім'я контакту вже існує
+    if (this.state.contacts.some(contact => contact.name === name)) {
+      alert(`Contact with name "${name}" already exists!`);
+      return;
+    }
+
     const newContact = {
       id: nanoid(),
+
       name,
       number,
     };
@@ -28,54 +37,42 @@ export class App extends Component {
     }));
   };
 
+  handleChangeFilter = event => {
+    this.setState({ filter: event.target.value });
+  };
+
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  handleDeleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
   render() {
-    const { contacts } = this.state;
+    const { filter } = this.state;
+    const filteredContacts = this.getFilteredContacts();
 
     return (
       <div>
-        <h2>Phonebook</h2>
-        <Formik
-          initialValues={{ name: '', number: '' }}
-          onSubmit={(values, { resetForm }) => {
-            this.handleAddContact(values);
-            resetForm();
-          }}
-        >
-          <Form>
-            <div>
-              <p>Name</p>
-              <Field
-                type="text"
-                name="name"
-                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-                required
-              />
-              <ErrorMessage name="name" component="div" />
-            </div>
-            <div>
-              <p>Phone number</p>
-              <Field
-                type="tel"
-                name="number"
-                pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-                title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-                required
-              />
-              <ErrorMessage name="number" component="div" />
-            </div>
-            <button type="submit">Add contact</button>
-          </Form>
-        </Formik>
+        <h1>Phonebook</h1>
+        <ContactForm onAddContact={this.handleAddContact} />
 
         <h2>Contacts</h2>
-        <ul>
-          {contacts.map(contact => (
-            <li key={contact.id}>
-              {contact.name}: {contact.number}
-            </li>
-          ))}
-        </ul>
+        <ContactFilter
+          filter={filter}
+          onChangeFilter={this.handleChangeFilter}
+        />
+        <ContactList
+          contacts={filteredContacts}
+          onDeleteContact={this.handleDeleteContact}
+        />
       </div>
     );
   }
