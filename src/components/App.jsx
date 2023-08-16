@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { nanoid } from 'nanoid';
+import * as Yup from 'yup';
 
 export class App extends Component {
   state = {
@@ -9,6 +10,11 @@ export class App extends Component {
     number: '',
   };
 
+  // const schema = Yup.objekt().shape({
+  //   name: Yup.string().required('* Name is required'),
+  //   number: Yup.string().min(6).max(10).required(''),
+  // });
+
   handleAddContact = values => {
     const { name, number } = values;
     const newContact = {
@@ -16,6 +22,7 @@ export class App extends Component {
       name,
       number,
     };
+
     this.setState(prevState => ({
       contacts: [...prevState.contacts, newContact],
     }));
